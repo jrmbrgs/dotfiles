@@ -1,0 +1,56 @@
+[user]
+	email= jbourgeais@voyageprive.com
+	name= Jerome Bourgeais
+[github]
+    user= jrmbrgs
+[alias]
+    me=     config user.name
+    a=      add
+    au=     add -u
+    br=     branch
+    st=     status
+    sts=    status -s
+    cp=     cherry-pick
+    lg=     log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(bold white)— %an%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
+    save=   !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+    # Commit
+    ci=     commit
+    unci=   git reset --soft HEAD~
+    # Diff
+    dc=     diff --cached
+    df=     diff --color --color-words
+    merge=  merge --no-ff
+    # Checkout
+    co=     checkout
+    cob=    checkout -b
+    com=    checkout master
+    cop=    checkout @{-1}
+    cor=    ! bash -c 'b=$( git branch -r --list origin/[[:digit:]][[:digit:]].[[:digit:]][[:digit:]] | tail -1) && git checkout ${b:9}'
+    # Pull
+    qo=     pull origin
+    qoc=    ! bash -c 'b=$(git rev-parse --abbrev-ref HEAD) && git pull origin $b'
+    qom=    pull origin master
+    # Push
+    pusho=  push origin
+    po=     push origin
+    poc=    ! bash -c 'b=$(git rev-parse --abbrev-ref HEAD) && git push origin $b'
+    pom=    push origin master
+    # Release
+    rc= ! bash -c 'b=$( git branch -r --list origin/[[:digit:]][[:digit:]].[[:digit:]][[:digit:]] | tail -1) && echo $b'
+    rp= ! bash -c 'b=$( git branch -r --list origin/[[:digit:]][[:digit:]].[[:digit:]][[:digit:]] | tail -2 | sort -r | tail -1) && echo $b'
+[mergetool]
+    prompt= false
+[difftool]
+    prompt= false
+[push]
+    default= current
+[pull]
+    default= simple
+[color]
+    ui = always
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[rerere]
+	enabled = true
