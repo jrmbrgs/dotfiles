@@ -155,6 +155,21 @@ augroup nerd_commenter
 augroup END
 " }}}
 
+" EasyAlign.vim {{{
+augroup easy_align_config
+    autocmd!
+    vmap <Leader>a <Plug>(EasyAlign)
+    nmap <Leader>a <Plug>(EasyAlign)
+augroup END
+" }}}
+
+" RainbowParenthesis.vim {{{
+augroup rainbow_parenthesis_config
+    autocmd!
+    nnoremap <leader>rp :RainbowParenthesesToggle<CR>
+augroup END
+" }}}
+
 " Load plugins
 call plug#begin('~/.vim/plugged')
 
@@ -162,5 +177,8 @@ Plug 'bling/vim-airline'
 Plug 'scrooloose/syntastic'
 Plug 'pangloss/vim-javascript'
 Plug 'scrooloose/nerdcommenter'
+Plug 'junegunn/vim-easy-align'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'tpope/vim-surround'
 
 call plug#end()
