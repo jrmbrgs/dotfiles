@@ -1,0 +1,13 @@
+alias l='ls -p'
+alias ll='l -lh --color'
+alias lt='l -lhtr --color'
+alias g='egrep --color=auto -i'
+alias S='sudo'
+alias G='git' # need a call to __git_complete() for completion to work
+alias mkd='mkdir -p'
+alias t='tail'
+alias tn='t -n'
+alias tf='t -F'
+alias sedi='sed -i.bak'
+alias ..='cd ..'
+alias sshdev='ssh jbourgeais@192.168.100.100'

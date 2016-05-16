@@ -9,7 +9,7 @@ set hlsearch
 set incsearch " Highlight dynamically as pattern is typed
 set noshowmode " Don't show the current mode (airline.vim takes care of us)
 
-set mouse=a " Enable mouse in all in all modes
+set mouse=v " Enable mouse in all in all modes
 
 let mapleader=","
 
@@ -42,7 +42,7 @@ nmap <silent> <M-down> <C-W>j
 nmap <silent> <Esc>[1;9D <C-W>h
 nmap <silent> <M-right> <C-W>l
 
-noremap <C-l> :!php -l %<CR>
+"noremap <C-l> :!php -l %<CR>
 "noremap <C-x> :!git add %<CR>
 
 " Local directories
@@ -170,6 +170,14 @@ augroup rainbow_parenthesis_config
 augroup END
 " }}}
 
+
+augroup jsdoc_config
+    autocmd!
+    let g:jsdoc_allow_input_prompt=1
+    let g:jsdoc_input_description=1
+    nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
+augroup END
+
 " Load plugins
 call plug#begin('~/.vim/plugged')
 
@@ -180,5 +188,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/vim-easy-align'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'tpope/vim-surround'
+Plug 'heavenshell/vim-jsdoc'
+
 
 call plug#end()
