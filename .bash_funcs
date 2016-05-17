@@ -1,0 +1,85 @@
+#!/bin/bash
+. .bash_sensitive
+
+getDeps ()
+{
+    git fetch origin
+    for s in $@; do
+        echo -e "\033[0;31m$s\033[0m";
+        git diff --name-only HEAD ... origin/$s -- dependencies/ | grep -v "sql$";
+        echo "";
+    done;
+}
+
+
+
+function mk_PR
+{
+    local PRSubject baseBr rawCurBr curBr ticketNo gitProject curProject
+    baseBr=$1
+    rawCurBr=$(git symbolic-ref HEAD)
+    curBr=${rawCurBr##refs/heads/}
+    ticketNo=$(echo $curBr | sed 's/^[a-Z0-9]*_\([0-9]*\).*/\1/')
+    curProject=$(pwd | sed 's/.*\/\([a-Z_]\)/\1/')
+    case "$curProject" in
+        "bg_builder")
+            gitProject="dev_vp_bong"
+            ;;
+        "booking_responsive")
+            gitProject="dev_vp_booking_responsive"
+            ;;
+        "oxybong")
+            gitProject="dev_vp_oxybong"
+            ;;
+        "fobong")
+            gitProject="dev_vp_front"
+            ;;
+        "turbo")
+            gitProject="turbo"
+            ;;
+        *)
+            echo "Not able to guess git projet name"
+            return 0
+            ;;
+    esac
+    echo br=$curBr
+    echo ticket=$ticketNo
+    echo curProject=$curProject
+    echo gitProject:$gitProject
+    read -e -r -p "Enter PR subject : " PRSubject
+    echo base_br=$base_br
+    echo '{ "title": "merge #'$ticketNo' - '$PRSubject'", "base": "'$baseBr'", "head": "'$curBr'", "body": "https://redmine.bovpg.net/issues/'$ticketNo'" }'
+    read -p '<type to cont>'
+    prUrl=`curl -u jrmbrgs -d '{ "title": "merge #'$ticketNo' - '"$PRSubject"'", "base": "'$baseBr'", "head": "'$curBr'", "body": "https://redmine.bovpg.net/issues/'$ticketNo'" }' -H "Content-Type: Content-Type: application/json" https://api.github.com/repos/vpg/$gitProject/pulls | grep "html_url" | head -1 | cut -d\" -f4`
+    echo "Pull #$prUrl created"
+    setRedmineTicketStatus $ticketNo 'to_review' $prUrl
+}
+
+
+function setRedmineTicketStatus
+{
+    if [ -z "$1" ]
+    then
+        echo "Missing ticket No"
+        return 1
+    fi
+    if [ -z "$2" ]
+    then
+        echo "Missing status"
+        return 1
+    fi
+    ticketNo=$1
+    status=$2
+    msg=$3
+    read -p "Set the redmine tickets to $status : <enter> OR <ctrl+c> to abort"
+    case "$status" in
+        "to_review")
+            statusNo="16"
+            ;;
+        *)
+            echo "Status not supported"
+            return 0
+            ;;
+    esac
+    curl -s -H "Content-Type: application/json" -X PUT --data "{\"issue\": { \"status_id\": $statusNo}, \"notes\": \"$msg\" }" https://redmine.bovpg.net/issues/$ticketNo.json?key=$redmineAPIKey
+}
