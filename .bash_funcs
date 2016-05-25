@@ -22,6 +22,9 @@ function mk_PR
     ticketNo=$(echo $curBr | sed 's/^[a-Z0-9]*_\([0-9]*\).*/\1/')
     curProject=$(pwd | sed 's/.*\/\([a-Z_]\)/\1/')
     case "$curProject" in
+        "frontvpg")
+            gitProject="dev_vp_front_responsive"
+            ;;
         "bg_builder")
             gitProject="dev_vp_bong"
             ;;
@@ -48,9 +51,9 @@ function mk_PR
     echo gitProject:$gitProject
     read -e -r -p "Enter PR subject : " PRSubject
     echo base_br=$base_br
-    echo '{ "title": "merge #'$ticketNo' - '$PRSubject'", "base": "'$baseBr'", "head": "'$curBr'", "body": "https://redmine.bovpg.net/issues/'$ticketNo'" }'
+    echo '{ "title": "merge #'$ticketNo' - '$PRSubject'", "base": "'$baseBr'", "head": "'$curBr'", "body": "https://'$redmineHost'/issues/'$ticketNo'" }'
     read -p '<type to cont>'
-    prUrl=`curl -u jrmbrgs -d '{ "title": "merge #'$ticketNo' - '"$PRSubject"'", "base": "'$baseBr'", "head": "'$curBr'", "body": "https://redmine.bovpg.net/issues/'$ticketNo'" }' -H "Content-Type: Content-Type: application/json" https://api.github.com/repos/vpg/$gitProject/pulls | grep "html_url" | head -1 | cut -d\" -f4`
+    prUrl=`curl -u jrmbrgs -d '{ "title": "merge #'$ticketNo' - '"$PRSubject"'", "base": "'$baseBr'", "head": "'$curBr'", "body": "https://'$redmineHost'/issues/'$ticketNo'" }' -H "Content-Type: Content-Type: application/json" https://api.github.com/repos/vpg/$gitProject/pulls | grep "html_url" | head -1 | cut -d\" -f4`
     echo "Pull #$prUrl created"
     setRedmineTicketStatus $ticketNo 'to_review' $prUrl
 }
@@ -81,5 +84,5 @@ function setRedmineTicketStatus
             return 0
             ;;
     esac
-    curl -s -H "Content-Type: application/json" -X PUT --data "{\"issue\": { \"status_id\": $statusNo}, \"notes\": \"$msg\" }" https://redmine.bovpg.net/issues/$ticketNo.json?key=$redmineAPIKey
+    curl -s -H "Content-Type: application/json" -X PUT --data "{\"issue\": { \"status_id\": $statusNo}, \"notes\": \"$msg\" }" https://$redmineHost/issues/$ticketNo.json?key=$redmineAPIKey
 }
