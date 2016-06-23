@@ -1,0 +1,30 @@
+"let mapleader = ","
+
+set ignorecase
+set smartcase
+set wrapscan
+set hlsearch
+set incsearch
+
+
+nnoremap gt :xccmd selectNextTab<CR>
+nnoremap gT :xccmd selectPreviousTab<CR>
+
+
+"Toggle a breakpoint at the current line
+nmap ,b :xccmd toggleBreakpointAtCurrentLine<CR>
+
+"Toggle comments for the selection
+nmap ,c :xccmd commentAndUncommentCurrentLines<CR>
+vmap ,c :xccmd commentAndUncommentCurrentLines<CR>
+
+nnoremap ,n :xccmd toggleNavigatorsVisibility<CR>
+
+"map ,jd :xcmenucmd Jump to Definition<CR> use gd instead.
+map ,jn :xcmenucmd Jump to Next Issue<CR>
+map ,ni :xcmenucmd Fix Next Issue<CR>
+map ,jp :xcmenucmd Jump to Previous Issue<CR>
+map ,pi :xcmenucmd Fix Previous Issue<CR>
+
+
+nmap ,s = 0f'cl"<esc>f'cl"<esc>
