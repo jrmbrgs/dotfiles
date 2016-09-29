@@ -7,6 +7,7 @@ for file in ~/.{bash_prompt,exports,bash_aliases,bash_funcs,bash_funcs_vp}; do
 done
 unset file
 
+eval $(thefuck --alias)
 
 # generic colouriser
 GRC=`which grc`
@@ -59,6 +60,9 @@ export NVM_DIR="$HOME/.nvm"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 
+export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH=$PATH:$JAVA_HOME/bin
+
 
 ##
 ## Completion…
@@ -106,4 +110,7 @@ shopt -s nocaseglob;
 shopt -s cdspell;
 
 #   github.com/rupa/z
-source ~/job/z/z.sh
+if [ -d /Users ]; then
+    export _Z_DATA="$HOME/.z.osx";
+fi
+source ~/code/z/z.sh
