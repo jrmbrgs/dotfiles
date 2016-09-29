@@ -1,12 +1,34 @@
 #!/bin/bash
 . .bash_sensitive
 
+getAllDeps ()
+{
+    for s in ${@:2}; do
+        echo -e "\033[0;31m$s\033[0m";
+        cd $s
+        pwd
+        getDeps $1
+        cd -
+        echo "";
+    done;
+}
+
 getDeps ()
 {
-    git fetch origin
+    local z=$(git fetch origin)
     for s in $@; do
-        echo -e "\033[0;31m$s\033[0m";
-        git diff --name-only HEAD ... origin/$s -- dependencies/ | grep -v "sql$";
+#        echo -e "\033[0;31m$s\033[0m";
+        git diff --name-only HEAD ... origin/$s -- dependencies/;
+        echo "";
+    done;
+}
+
+getRelDeps ()
+{
+    local z=$(git fetch origin)
+    for s in $@; do
+#        echo -e "\033[0;31m$s\033[0m";
+        git diff --name-only origin/$s ... HEAD -- dependencies/;
         echo "";
     done;
 }
@@ -25,6 +47,9 @@ function mk_PR
         "frontvpg")
             gitProject="dev_vp_front_responsive"
             ;;
+        "lib_phalcon")
+            gitProject="lib_phalcon"
+            ;;
         "bg_builder")
             gitProject="dev_vp_bong"
             ;;
@@ -39,6 +64,9 @@ function mk_PR
             ;;
         "turbo")
             gitProject="turbo"
+            ;;
+        "sidejs")
+            gitProject="sidejs"
             ;;
         *)
             echo "Not able to guess git projet name"
