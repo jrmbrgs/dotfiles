@@ -2,6 +2,7 @@ set nocompatible " be iMproved, required
 filetype off " required
 filetype plugin on
 syntax on
+set backspace=2
 set background=dark
 colorscheme darkblue
 set number
@@ -178,6 +179,15 @@ augroup jsdoc_config
     nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
 augroup END
 
+augroup phpdoc_config
+    autocmd!
+    let g:pdv_template_dir = $HOME ."/.vim/plugged/pdv/templates_snip"
+    nnoremap <buffer> <Leader>d :call pdv#DocumentWithSnip()<CR>
+augroup END
+
+
+
+
 " Load plugins
 call plug#begin('~/.vim/plugged')
 
@@ -189,6 +199,16 @@ Plug 'junegunn/vim-easy-align'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'tpope/vim-surround'
 Plug 'heavenshell/vim-jsdoc'
+Plug 'keith/swift.vim'
 
+"Php doc + deps
+Plug 'tobyS/pdv'
+Plug 'tobyS/vmustache'
+Plug 'SirVer/ultisnips'
+
+"JSX
+Plug 'mxw/vim-jsx'
+
+Plug 'derekwyatt/vim-scala'
 
 call plug#end()
