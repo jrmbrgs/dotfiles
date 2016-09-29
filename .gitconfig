@@ -54,3 +54,5 @@
 	status = auto
 [rerere]
 	enabled = true
+[core]
+	editor = /usr/bin/vim
