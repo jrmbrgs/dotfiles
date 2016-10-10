@@ -4,7 +4,7 @@ filetype plugin on
 syntax on
 set backspace=2
 set background=dark
-colorscheme darkblue
+colorscheme jb
 set number
 set hlsearch
 set incsearch " Highlight dynamically as pattern is typed

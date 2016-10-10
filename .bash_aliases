@@ -1,6 +1,6 @@
 alias l='ls -p'
-alias ll='l -lh --color'
-alias lt='l -lhtr --color'
+alias ll='l -lh'
+alias lt='ls -lhtr'
 alias g='egrep --color=auto -i'
 alias S='sudo'
 alias G='git' # need a call to __git_complete() for completion to work
