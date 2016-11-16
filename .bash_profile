@@ -1,4 +1,4 @@
-
+LANG=en_GB
 # Load our dotfiles like ~/.bash_prompt, etc…
 #   ~/.extra can be used for settings you don’t want to commit,
 #   Use it to configure your PATH, thus it being first in line.
@@ -8,6 +8,12 @@ done
 unset file
 
 eval $(thefuck --alias)
+
+# Avoid always asking for ssh passphrase
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+    eval `ssh-agent -s`
+    ssh-add
+fi
 
 # generic colouriser
 GRC=`which grc`
