@@ -1,15 +1,18 @@
 #!/bin/bash
-. .bash_sensitive
+. ~/.bash_sensitive
 
 getAllDeps ()
 {
-    for s in ${@:2}; do
-        echo -e "\033[0;31m$s\033[0m";
+    for s in ${@:3}; do
         cd $s
-        pwd
+        echo -e "\033[0;31m$s\033[0m : "$(pwd)
+        git fetch > /dev/null 2>&1 
+        git qoc > /dev/null 2>&1 
+        git co $1 > /dev/null 2>&1 
+        git qoc > /dev/null 2>&1 
+        git co $2 > /dev/null 2>&1 
         getDeps $1
-        cd -
-        echo "";
+        cd - > /dev/null 2>&1
     done;
 }
 

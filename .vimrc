@@ -13,6 +13,7 @@ set noshowmode " Don't show the current mode (airline.vim takes care of us)
 set mouse=v " Enable mouse in all in all modes
 
 let mapleader=","
+set laststatus=2
 
 " Map
 nnoremap Y y$
@@ -30,12 +31,12 @@ set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
 
 
 " Tab nav
-noremap <C-a>   :<C-U>tabnext<CR>
-inoremap <C-a>  <C-\><C-N>:tabnext<CR>
-cnoremap <C-a>  <C-C>:tabnext<CR>
-noremap <C-z>   :<C-U>tabprevious<CR>
-inoremap <C-z>  <C-\><C-N>:tabprevious<CR>
-cnoremap <C-z>  <C-C>:tabprevious<CR>
+noremap <A-a>   :<C-U>tabnext<CR>
+inoremap <A-a>  <C-\><C-N>:tabnext<CR>
+cnoremap <A-a>  <C-C>:tabnext<CR>
+noremap <A-z>   :<C-U>tabprevious<CR>
+inoremap <A-z>  <C-\><C-N>:tabprevious<CR>
+cnoremap <A-z>  <C-C>:tabprevious<CR>
 
 " Split nav
 nmap <silent> <M-up> <C-W>k
@@ -176,7 +177,8 @@ augroup jsdoc_config
     autocmd!
     let g:jsdoc_allow_input_prompt=1
     let g:jsdoc_input_description=1
-    nmap <silent> <C-l> ?function<cr>:noh<cr><Plug>(jsdoc)
+    let g:jsdoc_enable_es6=1
+    nmap <silent> <C-l> <Plug>(jsdoc)
 augroup END
 
 augroup phpdoc_config
@@ -206,9 +208,12 @@ Plug 'tobyS/pdv'
 Plug 'tobyS/vmustache'
 Plug 'SirVer/ultisnips'
 
-"JSX
+"Syntax
 Plug 'mxw/vim-jsx'
-
 Plug 'derekwyatt/vim-scala'
+Plug 'etaoins/vim-volt-syntax'
+Plug 'junegunn/fzf', { 'dir': '~/code/fzf', 'do': './install --all' }
+
+Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
