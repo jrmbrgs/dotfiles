@@ -222,4 +222,19 @@ Plug 'junegunn/fzf', { 'dir': '~/code/fzf', 'do': './install --all' }
 
 Plug 'terryma/vim-multiple-cursors'
 
+" IDE
+Plug 'flazz/vim-colorschemes'
+Plug 'majutsushi/tagbar'
+Plug '/Users/jbourgeais/code/vim-projects-ctags'
+"Plug 'jrmbrgs/vim-projects-ctags'
+
+
 call plug#end()
+
+let g:projectNameList = ['slingshot', 'turbo',]
+let g:tagFile = '.tags'
+let g:ctagsLang = {
+    \   'php' : '/usr/local/bin/ctags -R --languages=PHP --file-scope=no --exclude=.git --recurse=yes --exclude=vendor --totals=yes --PHP-kinds=+ncf',
+\}
+map <Leader>pt :call projectsCtags#GenCtags()<cr>
+map <Leader>pp :echo projectsCtags#GetProjectAbsolutePath()<cr>
