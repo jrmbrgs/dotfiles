@@ -1,6 +1,11 @@
 #!/bin/bash
 . ~/.bash_sensitive
 
+whichl ()
+{
+    which $1 | xargs ls -l
+}
+
 getAllDeps ()
 {
     for s in ${@:3}; do
