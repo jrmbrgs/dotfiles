@@ -5,14 +5,26 @@ syntax on
 set backspace=2
 set background=dark
 colorscheme jb
-set number
 set hlsearch
 set incsearch " Highlight dynamically as pattern is typed
 set noshowmode " Don't show the current mode (airline.vim takes care of us)
 
+let mapleader=","
+
+" Local directories
+set backupdir=~/.vim/backups
+set directory=~/.vim/swaps
+set undodir=~/.vim/undo
+
+" Number
+set number
+nmap <Leader>n :set nonumber!<CR>
+
+nmap <Leader>p :set paste!<CR>
+nmap <Leader>ss :source ~/.vimrc<CR>
+
 set mouse=v " Enable mouse in all in all modes
 
-let mapleader=","
 set laststatus=2
 
 " Map
@@ -28,7 +40,6 @@ set expandtab
 " Diff
 set diffopt=filler " Add vertical spaces to keep right and left aligned
 set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
-
 
 " Tab nav
 noremap <A-a>   :<C-U>tabnext<CR>
@@ -46,12 +57,6 @@ nmap <silent> <M-right> <C-W>l
 
 "noremap <C-l> :!php -l %<CR>
 "noremap <C-x> :!git add %<CR>
-
-" Local directories
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-set undodir=~/.vim/undo
-
 
 " Highlight Interesting Words {{{
 augroup highlight_interesting_word
@@ -145,6 +150,7 @@ augroup syntastic_config
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
+    nmap <Leader>s :SyntasticToggleMode<CR>
 augroup END
 " }}}
 
