@@ -170,4 +170,14 @@ if [ -d /Users ]; then
 fi
 source ~/code/z/z.sh
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# Setup fzf
+FZF_PATH=~/code/fzf
+if [ -d /Users ]; then
+    FZF_PATH=~/code/fzf.osx
+fi
+if [[ ! "$PATH" == *$FZF_PATH/bin* ]]; then
+    echo ok
+  export PATH=$PATH:$FZF_PATH/bin
+fi
+[[ $- == *i* ]] && source $FZF_PATH/shell/completion.bash 2> /dev/null
+source $FZF_PATH/shell/key-bindings.bash
