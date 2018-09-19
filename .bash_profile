@@ -2,7 +2,7 @@ LANG=en_GB.UTF-8
 # Load our dotfiles like ~/.bash_prompt, etc…
 #   ~/.extra can be used for settings you don’t want to commit,
 #   Use it to configure your PATH, thus it being first in line.
-for file in ~/.{bash_prompt,exports,bash_aliases,bash_funcs,bash_funcs_vp}; do
+for file in ~/.{bash_sensitive,bash_prompt,exports,bash_aliases,bash_funcs,bash_vp}; do
     [ -r "$file" ] && source "$file"
 done
 unset file
@@ -115,7 +115,7 @@ export NVM_DIR="$HOME/.nvm"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 
-export JAVA_HOME=$(/usr/libexec/java_home)
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 export PATH=$PATH:$JAVA_HOME/bin
 
 
@@ -181,3 +181,4 @@ if [[ ! "$PATH" == *$FZF_PATH/bin* ]]; then
 fi
 [[ $- == *i* ]] && source $FZF_PATH/shell/completion.bash 2> /dev/null
 source $FZF_PATH/shell/key-bindings.bash
+

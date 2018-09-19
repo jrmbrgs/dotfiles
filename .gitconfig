@@ -1,6 +1,6 @@
 [user]
-	email= jbourgeais@voyageprive.com
-	name= Jerome Bourgeais
+	email = jbourgeais@voyageprive.com
+	name = Jérôme Bourgeais
 [github]
     user= jrmbrgs
 [alias]
@@ -15,7 +15,7 @@
     save=   !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
     # Commit
     ci=     commit
-    unci=   git reset --soft HEAD~
+    unci=   reset --soft HEAD~
     # Diff
     dc=     diff --cached
     df=     diff --color --color-words

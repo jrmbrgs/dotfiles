@@ -5,11 +5,17 @@ syntax on
 set backspace=2
 set background=dark
 colorscheme jb
+
+" Search
 set hlsearch
 set incsearch " Highlight dynamically as pattern is typed
+set ignorecase
+set smartcase
 set noshowmode " Don't show the current mode (airline.vim takes care of us)
 
-let mapleader=","
+set mouse=a
+
+let mapleader=" "
 
 " Local directories
 set backupdir=~/.vim/backups
@@ -20,15 +26,17 @@ set undodir=~/.vim/undo
 set number
 nmap <Leader>n :set nonumber!<CR>
 
+nmap <Leader>m :set mouse=v<CR>
+nmap <Leader>M :set mouse=a<CR>
 nmap <Leader>p :set paste!<CR>
 nmap <Leader>ss :source ~/.vimrc<CR>
-
-set mouse=v " Enable mouse in all in all modes
+nmap <Leader>c :NERDTreeToggle<CR>:set nonumber!<CR>:set mouse=v<CR>:SyntasticToggleMode<CR>
 
 set laststatus=2
 
 " Map
 nnoremap Y y$
+vnoremap <C-c> "*y
 
 " Indent
 set autoindent
@@ -42,12 +50,12 @@ set diffopt=filler " Add vertical spaces to keep right and left aligned
 set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
 
 " Tab nav
-noremap <A-a>   :<C-U>tabnext<CR>
-inoremap <A-a>  <C-\><C-N>:tabnext<CR>
-cnoremap <A-a>  <C-C>:tabnext<CR>
-noremap <A-z>   :<C-U>tabprevious<CR>
-inoremap <A-z>  <C-\><C-N>:tabprevious<CR>
-cnoremap <A-z>  <C-C>:tabprevious<CR>
+map <Space><Left> :bp<CR>
+nmap <Space><Left> :bp<CR>
+map <Space><Right> :bn<CR>
+nmap <Space><Right> :bn<CR>
+nnoremap <Leader>q :bp\|bd #<CR>
+
 
 " Split nav
 nmap <silent> <M-up> <C-W>k
@@ -129,12 +137,24 @@ augroup END
 " }}}
 
 
+" PHPQA.vim {{{
+augroup phpqa_config
+    autocmd!
+let g:phpqa_codecoverage_file = "./build/cov/clover.xml"
+" Show markers for lines that ARE covered by tests (default = 1)
+let g:phpqa_codecoverage_showcovered = 0
+augroup END
+" }}}
+
 " Syntastic.vim {{{
 augroup syntastic_config
     autocmd!
     let g:syntastic_error_symbol = '✗'
     let g:syntastic_warning_symbol = '⚠'
+    "PHP
     let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+    let g:syntastic_php_phpcs_args = '--standard=$HOME/code/dotfiles/phpcs.ruleset.xml'
+    " Other Lang
     let g:syntastic_javascript_checkers = ['eslint']
     let g:syntastic_sql_checkers = ['sqlint']
     "let g:syntastic_Handlebars_checkers = ['handlebars']
@@ -151,6 +171,7 @@ augroup syntastic_config
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
     nmap <Leader>s :SyntasticToggleMode<CR>
+    noremap <Leader>z <C-w><Down><CR> " next syn error
 augroup END
 " }}}
 
@@ -194,6 +215,23 @@ augroup phpdoc_config
 augroup END
 
 
+augroup nerdtree_config
+    autocmd!
+    autocmd VimEnter * NERDTree
+    autocmd VimEnter * wincmd p
+    map <Leader>nt :NERDTreeToggle<CR>
+augroup END
+
+augroup fzf_config
+    autocmd!
+    let g:fzf_action = {
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
+    map <leader>p :FZF<CR>
+augroup END
+
+autocmd BufNewFile,BufRead *.sql  set filetype=mysql
 
 
 " Load plugins
@@ -207,34 +245,48 @@ Plug 'junegunn/vim-easy-align'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'tpope/vim-surround'
 Plug 'heavenshell/vim-jsdoc'
-Plug 'keith/swift.vim'
 
 "Php doc + deps
+Plug 'SirVer/ultisnips'
 Plug 'tobyS/pdv'
 Plug 'tobyS/vmustache'
-Plug 'SirVer/ultisnips'
 
 "Syntax
 Plug 'mxw/vim-jsx'
 Plug 'derekwyatt/vim-scala'
 Plug 'etaoins/vim-volt-syntax'
-Plug 'junegunn/fzf', { 'dir': '~/code/fzf', 'do': './install --all' }
+Plug 'keith/swift.vim'
+Plug 'vim-scripts/groovy.vim'
+Plug 'vim-scripts/groovyindent-unix'
+Plug 'puppetlabs/puppet-syntax-vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'python-mode/python-mode'
 
 Plug 'terryma/vim-multiple-cursors'
 
 " IDE
 Plug 'flazz/vim-colorschemes'
 Plug 'majutsushi/tagbar'
-Plug '/Users/jbourgeais/code/vim-projects-ctags'
+Plug 'Townk/vim-autoclose'
+Plug '~/code/vim-projects-ctags'
 "Plug 'jrmbrgs/vim-projects-ctags'
+Plug 'scrooloose/nerdtree'
+Plug 'junegunn/fzf', { 'dir': '~/code/fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-session'
+Plug 'joonty/vim-phpqa'
 
 
 call plug#end()
 
-let g:projectNameList = ['slingshot', 'turbo',]
+let g:projectNameList = ['slingshot', 'turbo', 'booking_responsive', 'frontvpg', 'bg_builder', 'disturb']
 let g:tagFile = '.tags'
 let g:ctagsLang = {
-    \   'php' : '/usr/local/bin/ctags -R --languages=PHP --file-scope=no --exclude=.git --recurse=yes --exclude=vendor --totals=yes --PHP-kinds=+ncf',
+    \   'php' : 'ctags -R --languages=PHP --file-scope=no --exclude=.git --recurse=yes --totals=yes --PHP-kinds=+cf',
 \}
+"          'php' : 'ctags -R --languages=PHP --file-scope=no --exclude=.git --recurse=yes --exclude=vendor --totals=yes --PHP-kinds=+ncf',
 map <Leader>pt :call projectsCtags#GenCtags()<cr>
 map <Leader>pp :echo projectsCtags#GetProjectAbsolutePath()<cr>
+map <leader>g <C-]>
